@@ -31,6 +31,11 @@ y = np.where(y == "Iris-setosa", 1, -1)
 # возьмем три признака для обучения
 X = df.iloc[:, [0, 1, 2]].values  # теперь используем три признака
 
+# Вычисляем минимальные и максимальные значения по каждой оси
+x_min, x_max = X[:, 0].min(), X[:, 0].max()
+y_min, y_max = X[:, 1].min(), X[:, 1].max()
+z_min, z_max = X[:, 2].min(), X[:, 2].max()
+
 # Признаки в X, ответы в y - посмотрим на 3D-графике как выглядит задача
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')  # создаем 3D-график
@@ -41,6 +46,12 @@ ax.scatter(X[y == -1, 0], X[y == -1, 1], X[y == -1, 2], color='blue', marker='x'
 ax.set_xlabel('Признак 1')
 ax.set_ylabel('Признак 2')
 ax.set_zlabel('Признак 3')
+
+# Устанавливаем пределы осей
+ax.set_xlim([x_min, x_max])
+ax.set_ylim([y_min, y_max])
+ax.set_zlim([z_min, z_max])
+
 plt.legend()
 plt.show()
 
@@ -95,14 +106,20 @@ ax.scatter(X[y == -1, 0], X[y == -1, 1], X[y == -1, 2], color='blue', marker='x'
 ax.set_xlabel('Признак 1')
 ax.set_ylabel('Признак 2')
 ax.set_zlabel('Признак 3')
+
+# Устанавливаем пределы осей
+ax.set_xlim([x_min, x_max])
+ax.set_ylim([y_min, y_max])
+ax.set_zlim([z_min, z_max])
+
 plt.legend()
 
 # Визуализируем разделяющую гиперплоскость
 for i, w in zip(range(len(w_iter)), w_iter):
     # Уравнение гиперплоскости: w1*x1 + w2*x2 + w3*x3 + w0 = 0
     # Для визуализации создаем сетку точек по x1 и x2, а x3 вычисляем
-    x1_range = np.linspace(min(X[:, 0]), max(X[:, 0]), 10)
-    x2_range = np.linspace(min(X[:, 1]), max(X[:, 1]), 10)
+    x1_range = np.linspace(x_min, x_max, 10)
+    x2_range = np.linspace(y_min, y_max, 10)
     x1, x2 = np.meshgrid(x1_range, x2_range)
     x3 = -(w[1] * x1 + w[2] * x2 + w[0]) / w[3]  # вычисляем x3
 
